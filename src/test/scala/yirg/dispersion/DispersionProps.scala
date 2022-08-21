@@ -20,30 +20,30 @@ object DispersionProps extends Properties("Dispersion") {
   def props[A : Numeric : Arbitrary](name: String) = new Properties(name) {
 
     property("left identity") = forAll {
-      vs: Seq[A] => Dispersion[A] ++ Dispersion(vs) == Dispersion(vs)
+      (vs: Seq[A]) => Dispersion[A] ++ Dispersion(vs) == Dispersion(vs)
     }
 
     property("right identity") = forAll {
-      vs: Seq[A] => Dispersion(vs) ++ Dispersion[A] == Dispersion(vs)
+      (vs: Seq[A]) => Dispersion(vs) ++ Dispersion[A] == Dispersion(vs)
     }
 
-    property("adding a sequence is the same as adding in sequence") = forAll { vs: Seq[A] =>
+    property("adding a sequence is the same as adding in sequence") = forAll { (vs: Seq[A]) =>
       Dispersion[A] + vs ~= vs.foldLeft(Dispersion[A]: Dispersion[A])(_ + _)
     }
 
-    property("mean is mean") = forAll { vs: Seq[A] =>
+    property("mean is mean") = forAll { (vs: Seq[A]) =>
       vs.nonEmpty ==> close(mean(vs), Dispersion[A](vs).mean)
     }
 
-    property("deviation is deviation") = forAll { vs: Seq[A] =>
+    property("deviation is deviation") = forAll { (vs: Seq[A]) =>
       vs.length > 2 ==> close(deviation(vs), Dispersion[A](vs).deviation)
     }
 
-    property("variance is variance") = forAll { vs: Seq[A] =>
+    property("variance is variance") = forAll { (vs: Seq[A]) =>
       vs.length > 2 ==> close(variance(vs), Dispersion[A](vs).variance)
     }
 
-    property("reverse") = forAll { vs: Seq[A] =>
+    property("reverse") = forAll { (vs: Seq[A]) =>
       Dispersion(vs) ~= Dispersion(vs.reverse)
     }
 
